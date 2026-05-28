@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B.M. — Scenic Photography · San Francisco Bay Area</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:  #FAF6F0;
+      --warm:   #F0E8D5;
+      --stone:  #8C7B5E;
+      --bark:   #1C0A00;
+      --gold:   #B3995D;
+      --red:    #AA0000;
+      --ff-serif: 'Playfair Display', Georgia, serif;
+      --ff-sans:  'Jost', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--bark);
+      font-family: var(--ff-sans);
+      font-weight: 300;
+      cursor: none;
+    }
+
+    /* ── CURSOR ─────────────────────────────────────── */
+    .cursor {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--red); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    .cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid var(--gold); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%); opacity: 0.6;
+    }
+
+    /* ── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3.5rem;
+      background: rgba(28,10,0,0.55);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(179,153,93,0.2);
+    }
+    .nav-logo {
+      font-family: var(--ff-serif);
+      font-size: 1.1rem; font-weight: 400;
+      letter-spacing: 0.25em; color: var(--cream);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(250,246,240,0.6); text-decoration: none;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO — full viewport aerial shot ───────────── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1744142211084-7731fae94e9f?w=2000&q=90&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.04);
+      animation: heroZoom 12s ease forwards;
+    }
+
+    @keyframes heroZoom {
+      to { transform: scale(1); }
+    }
+
+    /* gradient vignette */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to right, rgba(28,10,0,0.6) 0%, rgba(28,10,0,0.1) 60%, transparent 100%),
+        linear-gradient(to top, rgba(28,10,0,0.75) 0%, transparent 55%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 3.5rem 5rem;
+      max-width: 720px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.6rem; font-weight: 400;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.25rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+    }
+
+    .hero-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(3.2rem, 6vw, 6rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--cream); margin-bottom: 1.75rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.85s;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+
+    .hero-sub {
+      font-size: 0.9rem; font-weight: 300;
+      color: rgba(250,246,240,0.72);
+      line-height: 1.8; max-width: 440px;
+      margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.05s;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--cream); text-decoration: none;
+      border-bottom: 1px solid var(--gold); padding-bottom: 3px;
+      transition: color 0.25s, border-color 0.25s;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.2s;
+    }
+    .hero-cta:hover { color: var(--gold); }
+
+    /* gold bar bottom */
+    #hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--gold); z-index: 3;
+    }
+
+    /* photo label bottom-right */
+    .hero-label {
+      position: absolute; bottom: 1.5rem; right: 3.5rem;
+      font-size: 0.55rem; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      z-index: 3; writing-mode: vertical-rl;
+    }
+
+    /* ── GALLERY ────────────────────────────────────── */
+    #work { padding: 8rem 3.5rem; }
+
+    .work-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between; margin-bottom: 4rem;
+    }
+    .work-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 300; color: var(--bark);
+    }
+    .work-title::after {
+      content: ''; display: block;
+      width: 48px; height: 2px;
+      background: var(--gold); margin-top: 0.6rem;
+    }
+    .work-note {
+      font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--stone);
+    }
+
+    /* 10-photo editorial grid — 12 cols × 5 rows of 200px */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(5, 200px);
+      gap: 10px;
+    }
+
+    .g-item { overflow: hidden; position: relative; cursor: none; }
+
+    .g-item:nth-child(1)  { grid-column: 1 / 8;  grid-row: 1 / 3; } /* wide landscape  */
+    .g-item:nth-child(2)  { grid-column: 8 / 13; grid-row: 1 / 1; } /* top right       */
+    .g-item:nth-child(3)  { grid-column: 8 / 11; grid-row: 2 / 3; } /* mid right       */
+    .g-item:nth-child(4)  { grid-column: 11 / 13;grid-row: 2 / 3; } /* small corner    */
+    .g-item:nth-child(5)  { grid-column: 1 / 5;  grid-row: 3 / 5; } /* tall portrait   */
+    .g-item:nth-child(6)  { grid-column: 5 / 8;  grid-row: 3 / 4; } /* small           */
+    .g-item:nth-child(7)  { grid-column: 8 / 13; grid-row: 3 / 5; } /* wide landscape  */
+    .g-item:nth-child(8)  { grid-column: 5 / 8;  grid-row: 4 / 5; } /* small           */
+    .g-item:nth-child(9)  { grid-column: 1 / 7;  grid-row: 5 / 6; } /* wide bottom     */
+    .g-item:nth-child(10) { grid-column: 7 / 13; grid-row: 5 / 6; } /* wide bottom     */
+
+    /* red top reveal on hover */
+    .g-item::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--red); z-index: 3;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .g-item:hover::before { transform: scaleX(1); }
+
+    .g-bg {
+      width: 100%; height: 100%;
+      background-size: cover; background-position: center;
+      transition: transform 0.7s ease;
+    }
+    .g-item:hover .g-bg { transform: scale(1.06); }
+
+    .g-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(to top, rgba(28,10,0,0.75), transparent);
+      opacity: 0; transition: opacity 0.4s; z-index: 2;
+    }
+    .g-item:hover .g-caption { opacity: 1; }
+    .g-caption-text {
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.92);
+    }
+
+    /* ── ABOUT ──────────────────────────────────────── */
+    #about {
+      padding: 8rem 3.5rem;
+      background: var(--warm);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem; align-items: center;
+    }
+
+    .about-img-wrap { position: relative; aspect-ratio: 3/4; max-height: 560px; }
+
+    .about-img {
+      width: 100%; height: 100%;
+      background-image: url('https://images.unsplash.com/photo-1632293501693-c641d3eaf8d2?w=900&q=85&auto=format&fit=crop');
+      background-size: cover; background-position: center;
+    }
+    .about-img-border {
+      position: absolute;
+      top: 1.5rem; left: 1.5rem; right: -1.5rem; bottom: -1.5rem;
+      border: 2px solid var(--gold); opacity: 0.4; z-index: -1;
+    }
+
+    .about-label {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+    }
+    .about-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2.2rem, 3vw, 3.2rem);
+      font-weight: 300; line-height: 1.2;
+      color: var(--bark); margin-bottom: 2rem;
+    }
+    .about-body {
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--stone); line-height: 1.9; margin-bottom: 1.5rem;
+    }
+    .about-sig {
+      font-family: var(--ff-serif);
+      font-size: 2rem; font-style: italic;
+      font-weight: 300; color: var(--red); margin-top: 2.5rem;
+    }
+
+    /* ── CONTACT ────────────────────────────────────── */
+    #contact {
+      padding: 8rem 3.5rem;
+      max-width: 680px; margin: 0 auto; text-align: center;
+    }
+    .contact-label {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+    }
+    .contact-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2.2rem, 3vw, 3.2rem);
+      font-weight: 300; line-height: 1.2;
+      color: var(--bark); margin-bottom: 1.5rem;
+    }
+    .contact-sub {
+      font-size: 0.875rem; color: var(--stone);
+      line-height: 1.8; margin-bottom: 3.5rem;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; text-align: left; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label {
+      font-size: 0.6rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--stone);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: transparent; border: none;
+      border-bottom: 1px solid rgba(179,153,93,0.3);
+      color: var(--bark); font-family: var(--ff-sans);
+      font-size: 0.9rem; font-weight: 300;
+      padding: 0.6rem 0; outline: none;
+      transition: border-color 0.25s;
+      border-radius: 0; -webkit-appearance: none;
+    }
+    .form-group select option { background: var(--cream); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--red); }
+    .form-group textarea { min-height: 100px; resize: none; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .inquiry-note {
+      font-size: 0.75rem; color: var(--stone);
+      font-style: italic; text-align: center; margin-top: 0.5rem;
+    }
+    .btn-submit {
+      background: transparent; border: 1px solid var(--red);
+      color: var(--red); font-family: var(--ff-sans);
+      font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      padding: 1rem 2.5rem; cursor: none;
+      transition: background 0.3s, color 0.3s;
+      margin-top: 1rem; align-self: center;
+    }
+    .btn-submit:hover { background: var(--red); color: var(--cream); }
+    .form-success {
+      display: none; font-family: var(--ff-serif);
+      font-size: 1.5rem; font-style: italic;
+      font-weight: 300; color: var(--red);
+      text-align: center; padding: 3rem 0;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer {
+      background: var(--bark);
+      border-top: 4px solid var(--gold);
+      padding: 2.5rem 3.5rem;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-name {
+      font-family: var(--ff-serif);
+      font-size: 1rem; font-weight: 300;
+      letter-spacing: 0.2em; color: var(--gold);
+    }
+    .footer-copy { font-size: 0.65rem; letter-spacing: 0.12em; color: var(--stone); }
+    .footer-loc  { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone); }
+
+    /* ── PHOTO CREDITS ──────────────────────────────── */
+    .photo-credits {
+      margin-top: 1rem; font-size: 0.6rem;
+      color: var(--stone); letter-spacing: 0.04em;
+    }
+    .photo-credits a { color: var(--stone); text-decoration: underline; }
+
+    /* ── REVEAL ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .gallery {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(8, 180px);
+      }
+      .g-item:nth-child(1)  { grid-column: 1 / 7; grid-row: 1 / 2; }
+      .g-item:nth-child(2)  { grid-column: 1 / 4; grid-row: 2 / 3; }
+      .g-item:nth-child(3)  { grid-column: 4 / 7; grid-row: 2 / 3; }
+      .g-item:nth-child(4)  { grid-column: 1 / 4; grid-row: 3 / 4; }
+      .g-item:nth-child(5)  { grid-column: 4 / 7; grid-row: 3 / 5; }
+      .g-item:nth-child(6)  { grid-column: 1 / 4; grid-row: 4 / 5; }
+      .g-item:nth-child(7)  { grid-column: 1 / 7; grid-row: 5 / 6; }
+      .g-item:nth-child(8)  { grid-column: 1 / 4; grid-row: 6 / 7; }
+      .g-item:nth-child(9)  { grid-column: 4 / 7; grid-row: 6 / 7; }
+      .g-item:nth-child(10) { grid-column: 1 / 7; grid-row: 7 / 8; }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { }
+      .hero-content { padding: 0 2rem 4rem; }
+      #work { padding: 5rem 2rem; }
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .g-item { grid-column: auto !important; grid-row: auto !important; height: 220px; }
+      #about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+      .about-img-wrap { max-height: 350px; aspect-ratio: 4/3; }
+      #contact { padding: 5rem 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 2rem; flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 560px) {
+      .gallery { grid-template-columns: 1fr; }
+      .g-item { height: 240px; }
+      .nav-links { display: none; }
+      .hero-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">B . M<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#work">Portfolio</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO — Aerial Golden Gate + sailboat + SF skyline -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Scenic Photography · San Francisco Bay Area</p>
+      <h1 class="hero-title">
+        The Bay from<br />
+        <em>above</em> and<br />
+        beyond.
+      </h1>
+      <p class="hero-sub">
+        Capturing San Francisco and the Bay Area in its full grandeur — from
+        aerial perspectives over the Golden Gate to the quiet coves of Marin
+        and the tidal flats of the East Bay.
+      </p>
+      <a class="hero-cta" href="#work">View the portfolio</a>
+    </div>
+    <span class="hero-label">Golden Gate Bridge · San Francisco Bay · Aerial</span>
+  </section>
+
+  <!-- PORTFOLIO GALLERY — 10 photos -->
+  <section id="work">
+    <div class="work-header reveal">
+      <h2 class="work-title">Portfolio</h2>
+      <span class="work-note">San Francisco Bay Area</span>
+    </div>
+
+    <div class="gallery reveal">
+
+      <!-- 1. Aerial GGB + Marin coastline — Kellen Riggin -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1716425945140-4110a4dbaff6?w=1400&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Golden Gate · Aerial &amp; Marin Coast</span></div>
+      </div>
+
+      <!-- 2. Aerial GGB sunset — Alex Perry -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1527905876394-1e5115891cba?w=1200&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Golden Gate Bridge · Sunset</span></div>
+      </div>
+
+      <!-- 3. GGB from Marin Headlands — Spencer DeMera -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1745811360413-eb71bf4ddc9c?w=1000&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Marin Headlands</span></div>
+      </div>
+
+      <!-- 4. Sailboats docked + GGB — Logan Weaver -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1757120377609-8269107a5eaf?w=900&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Marina · Sailboats &amp; Bridge</span></div>
+      </div>
+
+      <!-- 5. GGB from across bay — Ciprian Boiciuc -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1632293501693-c641d3eaf8d2?w=1000&q=85&auto=format&fit=crop');background-position:center top;"></div>
+        <div class="g-caption"><span class="g-caption-text">Golden Gate · Bay Crossing</span></div>
+      </div>
+
+      <!-- 6. Bay Bridge at night — Mick Haupt -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1721977626357-fc3c98059508?w=1000&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Bay Bridge · Twilight</span></div>
+      </div>
+
+      <!-- 7. Point Reyes Lighthouse — Casey Horner -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1506397663129-f05904795da9?w=1400&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Point Reyes · Lighthouse at Dawn</span></div>
+      </div>
+
+      <!-- 8. Muir Woods trail — Kevin Wolf -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1536626321168-6350af5a45a3?w=900&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Muir Woods · Redwood Trail</span></div>
+      </div>
+
+      <!-- 9. Mount Tamalpais panoramic — Daniel Halseth -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1611026491910-0ca1bf60ea25?w=1400&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Mount Tamalpais · Panoramic</span></div>
+      </div>
+
+      <!-- 10. Point Reyes shoreline — Joshua Sortino -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1515705288883-2475ee0da018?w=1400&q=85&auto=format&fit=crop');"></div>
+        <div class="g-caption"><span class="g-caption-text">Point Reyes · Shoreline</span></div>
+      </div>
+
+    </div>
+
+    <p class="photo-credits reveal">
+      Photos via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a> (free to use):
+      Kellen Riggin · Alex Perry · Spencer DeMera · Logan Weaver · Ciprian Boiciuc ·
+      Mick Haupt · Casey Horner · Kevin Wolf · Daniel Halseth · Joshua Sortino · Gantavya Bhatt
+    </p>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img-wrap reveal">
+      <div class="about-img"></div>
+      <div class="about-img-border"></div>
+    </div>
+    <div class="reveal">
+      <p class="about-label">About</p>
+      <h2 class="about-title">The Bay in every<br />light and season.</h2>
+      <p class="about-body">
+        Based in the San Francisco Bay Area, I spend my days — and often my
+        nights — chasing the light across one of the world's most visually
+        dramatic regions. From the fog-draped towers of the Golden Gate to the
+        golden hills of the East Bay at dusk, every frame tells a story of place.
+      </p>
+      <p class="about-body">
+        My work spans aerial and ground-level perspectives, urban and wild, still
+        and in motion. I believe the Bay Area is a subject that rewards obsession —
+        no two mornings on the bridge are ever the same.
+      </p>
+      <p class="about-body">
+        Available for editorial assignments, licensing, fine art prints, and
+        commercial work. Inquiries welcome.
+      </p>
+      <div class="about-sig">B.M.</div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="contact-label reveal">Get in Touch</p>
+    <h2 class="contact-title reveal">Let's work together.</h2>
+    <p class="contact-sub reveal">
+      Whether you're interested in prints, licensing, editorial work, or a
+      commission — reach out and I'll get back to you within a couple of days.
+    </p>
+    <form class="contact-form reveal" id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" required />
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required />
+      </div>
+      <div class="form-group">
+        <label for="interest">Nature of Inquiry</label>
+        <select id="interest">
+          <option value="">Select one...</option>
+          <option>Fine Art Prints</option>
+          <option>Editorial Licensing</option>
+          <option>Commercial Licensing</option>
+          <option>Aerial Photography Commission</option>
+          <option>General Inquiry</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Tell me about your project..."></textarea>
+      </div>
+      <p class="inquiry-note">Pricing discussed privately upon inquiry.</p>
+      <button type="submit" class="btn-submit">Send Inquiry</button>
+    </form>
+    <div class="form-success" id="formSuccess">
+      Thank you — I'll be in touch soon.
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">B . M .</span>
+    <span class="footer-loc">San Francisco Bay Area</span>
+    <span class="footer-copy">&copy; 2025 &middot; All images reserved</span>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    });
+
+    (function animRing() {
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 100);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => obs.observe(el));
+
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
