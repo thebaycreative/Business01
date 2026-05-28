@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brokaw & Murphy | Premier Retail Real Estate Investment Trust</title>
+    <style>
+        :root {
+            --primary: #0f2d4a; /* Deep Institutional Blue */
+            --secondary: #c5a059; /* Muted Gold Accent */
+            --text-dark: #222222;
+            --text-light: #f8f9fa;
+            --bg-light: #f4f6f8;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #ffffff;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--primary);
+            padding: 1.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(15, 45, 74, 0.75), rgba(15, 45, 74, 0.75)), 
+                        url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .btn {
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 0.8rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #dcb365;
+            transform: translateY(-2px);
+        }
+
+        /* Section Global styling */
+        section {
+            padding: 5rem 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary);
+            margin: 0.5rem auto 0;
+        }
+
+        /* Strategy Section */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .strategy-card {
+            background-color: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 6px;
+            border-top: 4px solid var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .strategy-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            background-color: var(--bg-light);
+        }
+
+        .portfolio-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .portfolio-content h3 {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: #a0b2c6;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem 5%; }
+            .nav-links { display: none; } /* Simplified for template */
+            section { padding: 4rem 5%; }
+            .hero h1 { font-size: 2.2rem; }
+            .portfolio-showcase { grid-template-columns: 1fr; gap: 2rem; }
+            .portfolio-img { height: 250px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav>
+        <div class="logo">Brokaw & <span>Murphy</span></div>
+        <ul class="nav-links">
+            <li><a href="#about">Our Strategy</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <h1>Necessity-Based Retail Real Estate</h1>
+        <p>Acquiring and managing premier, grocery-anchored shopping centers across the Western United States to deliver sustainable, long-term investor value.</p>
+        <a href="#portfolio" class="btn">Explore Our Portfolio</a>
+    </header>
+
+    <!-- Strategy Section -->
+    <section id="about">
+        <h2 class="section-title">Investment Strategy</h2>
+        <div class="strategy-grid">
+            <div class="strategy-card">
+                <h3>Grocery-Anchored Stability</h3>
+                <p>We focus exclusively on multi-tenant retail centers anchored by dominant, high-volume grocery chains. This ensures consistent daily foot traffic and resilient consumer demand across all economic cycles.</p>
+            </div>
+            <div class="strategy-card">
+                <h3>West Coast Focus</h3>
+                <p>By targeting densely populated, high-barrier-to-entry supply markets across the Western United States, we secure institutional-grade assets poised for rental growth and appreciation.</p>
+            </div>
+            <div class="strategy-card">
+                <h3>Active Asset Management</h3>
+                <p>Our hands-on leasing and operational management team optimizes tenant mixes, enhancing centers with localized daily-necessity services, medical retail, and community-centric dining.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <h2 class="section-title">Our Presence</h2>
+        <div class="portfolio-showcase">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Modern grocery marketplace storefront" class="portfolio-img">
+            <div class="portfolio-content">
+                <h3>High-Quality, Essential Retail Hubs</h3>
+                <p>Our portfolio consists of strategically located commercial retail hubs designed around modern consumer habits. By matching top-tier supermarkets with daily-needs e-commerce resilient retail, we shield our assets from digital disruption.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">55+</span>
+                        <span class="stat-label">Properties</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5.8M</span>
+                        <span class="stat-label">Sq. Footage</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">96%</span>
+                        <span class="stat-label">Occupancy Rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Partner With Us</h2>
+        <div class="contact-container">
+            <p>Whether you are an institutional partner, looking to divest a retail asset, or a prospective tenant seeking a premier West Coast retail location, our team is ready to collaborate.</p>
+            <div class="contact-info">
+                <p><strong>Brokaw & Murphy Real Estate Investment Trust</strong></p>
+                <p>Corporate Headquarters | San Diego, California</p>
+                <p style="margin-top: 1rem; color: var(--secondary); font-weight: bold;">info@brokawmurphy.com</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Brokaw & Murphy. All rights reserved. Built for institutional real estate performance.</p>
+    </footer>
+
+</body>
+</html>
